@@ -1,0 +1,107 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Creates an S3 Bucket, IAM Policies, and SageMaker Notebook to work with On-Demand Seismic Processing.
+
+Parameters:
+
+    BucketName:
+        Type: String
+        Default: seismic-results-firstname-lastname
+        Description: The name of the S3 Bucket to create to store calculation results, use only characters and numbers, no special characters or spaces.  Must be globally unique.  Keep a copy of this name, as it will be needed later.
+        MinLength: 6
+        MaxLength: 64
+
+    NotebookName:
+        Type: String
+        Default: Seismic-Processing-Firstname-Lastname
+        Description: Enter the name of the SageMaker notebook instance.  This is the notebook you will be opening for this course.
+        MinLength: 6
+        MaxLength: 64
+
+  
+Resources:
+    # S3 Bucket
+    S3Bucket:
+        Type: AWS::S3::Bucket
+        Properties:
+            BucketName: !Ref BucketName
+            BucketEncryption:
+                ServerSideEncryptionConfiguration:
+                -
+                    ServerSideEncryptionByDefault:
+                        SSEAlgorithm: AES256
+            PublicAccessBlockConfiguration:
+                BlockPublicAcls: true
+                IgnorePublicAcls: true
+                BlockPublicPolicy: true
+                RestrictPublicBuckets: true
+
+    # SageMaker IAM Role
+    SageMakerIamRole:
+        Type: "AWS::IAM::Role"
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                    -
+                        Effect: Allow
+                        Principal:
+                            Service: [sagemaker.amazonaws.com]
+                        Action: sts:AssumeRole
+            Path: "/"
+            ManagedPolicyArns:
+                - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
+                - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+                - "arn:aws:iam::aws:policy/service-role/AWSLambdaRole"
+    # SageMaker Notebook
+    NotebookInstance:
+        Type: "AWS::SageMaker::NotebookInstance"
+        Properties:
+            InstanceType: "ml.t2.medium"
+            NotebookInstanceName: !Ref NotebookName
+            RoleArn: !GetAtt SageMakerIamRole.Arn
+            DefaultCodeRepository: https://github.com/vavourak/serverless_seismic_processing.git
+
+
+    # Lambda IAM Role
+    LambdaIamRole:
+        Type: "AWS::IAM::Role"
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                    -
+                        Effect: Allow
+                        Principal:
+                            Service: [lambda.amazonaws.com]
+                        Action: sts:AssumeRole
+            Path: "/"
+            ManagedPolicyArns:
+                - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+                - "arn:aws:iam::aws:policy/AWSXrayFullAccess"
+
+
+    # Lambda Function for Mean Amplitude
+    SegyMeanAmpLambda:
+        Type: AWS::Lambda::Function
+        Properties: 
+            Code: 
+                S3Bucket: vavourak-public
+                S3Key: Lambdas/SegyBatchProcessMeanAmp.zip
+            Handler: lambda_function.lambda_handler
+            MemorySize: 128
+            Role: !GetAtt LambdaIamRole.Arn
+            Runtime: python3.8
+            Timeout: 600
+            TracingConfig: 
+                Mode: Active
+
+Outputs:
+    S3Bucket:
+        Value: !Ref BucketName
+        Description: S3 bucket for processing results
+    SageMaker:
+        Value: !Ref NotebookName
+        Description: SageMaker notebook name
