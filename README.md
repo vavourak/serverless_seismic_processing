@@ -1,4 +1,4 @@
-# Serverless seismic calculations using Lambda Functions on AWS
+# Serverless seismic calculations using Lambda on AWS
 
 This is an example of using AWS for serverless on-demand seismic calculations.  The ability to run Lambda functions in parallel without having to provision and compute resources (e.g. EC2 instances, clusters, file systems) greatly reduces the complexity of the workflow.  
 
