@@ -14,7 +14,7 @@ Parameters:
 
     NotebookName:
         Type: String
-        Default: Seismic-Processing-Firstname-Lastname
+        Default: Seismic-Lambda-Firstname-Lastname
         Description: Enter the name of the SageMaker notebook instance.  This is the notebook you will be opening for this course.
         MinLength: 6
         MaxLength: 64
