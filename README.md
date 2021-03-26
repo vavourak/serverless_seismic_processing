@@ -21,14 +21,14 @@ In the provided Jupyter notebooks that can be used with Amazon SageMaker, we wil
 14. Click the "Open Jupyter" next to the instance you created. It should have the two notebooks already uploaded.
 
 ## Calculation Steps
-1. Read in the header information of a SEGY file
-2. Calculate the trace mean amplitude for each trace in SageMaker as a benchmark
-3. Provision up to 1000 Lambda functions to do the calculation in parallel
-4. Store the resutls in S3
-5. Display the results in the notebook
+1. Read in the header information of a SEGY file.
+2. Calculate the trace mean amplitude for each trace in SageMaker as a benchmark.
+3. Provision up to 1000 Lambda functions to do the calculation in parallel.
+4. Store the resutls in S3.
+5. Display the results in the notebook.
 
-Note:
+### Note
 The workshop uses the seismic volumes publically available from the Equinor Volve Data Village dataset, licensing permitting.  Anyone who wants to follow the workshop and not use their own SEGY files should download the required files independently and upload them to an AWS S3 bucket.  Alternatively, you can provide your own SEGY files, though due to variations in SEGY revisions and data types, the provided Python code might not decode them correctly and might need to be adjusted.
 
-Author:
+### Author
 Constantine Vavourakis (AWS, Sr. Solutions Architect)
