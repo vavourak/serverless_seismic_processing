@@ -5,12 +5,12 @@ This is an example of using AWS services for serverless on-demand seismic calcul
 In the provided Jupyter notebooks that can be used with Amazon SageMaker, we will compare the performance between doing the processing on an EC2 instance versus using on-demand Lambda.  The provided CloudFormation template will spin up the required AWS services and permissions to run this workshop.  Once completed, simply remove the stack from your account.
 
 ## Installation
-1. Download the CloudFormation template **Seismic_Processing_CF_Template_????.yaml** this is appropriate for the AWS region you will be working in.
+1. Download the CloudFormation template **Seismic_Calculations_CloudFormation_Template_????.yaml** this is appropriate for the AWS region you will be working in.
 2. Create an AWS account.
 3. From the AWS console, navigate to **CloudFormation**.
 4. Click on **Create Stack**.
 5. Keep **Template is Ready** selected above, then select **Upload a template file** below.
-6. Upload the **Seismic_Processing_CF_Template.yaml** template you downloaded and click **Next**.
+6. Upload the **Seismic_Calculations_CloudFormation_Template_????.yaml** file and click **Next**.
 7. On the next page, give the stack a descriptive name, such as **Seismic-Calculations**.
 8. Define an S3 bucket name to be created (it has to be a unique name globally, so using your name usually works).
 9. Define a notebook name for SageMaker that is unique in your account.
