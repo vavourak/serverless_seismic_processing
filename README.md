@@ -2,6 +2,9 @@
 
 This is an example of using AWS services for serverless on-demand seismic calculations.  The ability to run Lambda functions in parallel without having to provision any compute resources (e.g. EC2 instances, clusters, file systems) greatly reduces the complexity of the workflow and underlying code.  
 
+When you do processing in a SageMaker Notebook, you are limited to the power of the EC2 computer instance underlying it, as below:
+![title](images/Page-1.png)
+
 In the provided Jupyter notebooks that can be used with Amazon SageMaker, we will compare the performance between doing the processing on an EC2 instance versus using on-demand Lambda.  The provided CloudFormation template will spin up the required AWS services and permissions to run this workshop.  Once completed, simply remove the stack from your account.
 
 ## Installation
